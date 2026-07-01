@@ -2,17 +2,30 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>Registro de Denuncias VIF</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+    <h1>Formulario de Denuncia</h1>
+
     <form id="denunciaForm">
-        <input type="text" id="titulo" placeholder="Título" required>
+        <select id="tipoDenuncia" required>
+            <option value="">Seleccione el tipo de denuncia</option>
+            <option value="Violencia Física">Violencia Física</option>
+            <option value="Violencia Psicológica">Violencia Psicológica</option>
+            <option value="Violencia Económica">Violencia Económica</option>
+        </select>
+
         <input type="text" id="nombre" placeholder="Nombre completo" required>
         <input type="email" id="email" placeholder="Correo" required>
-        <textarea id="descripcion" placeholder="Descripción" required></textarea>
+        <textarea id="descripcion" placeholder="Descripción de los hechos" required></textarea>
+        
         <button type="submit">Enviar Denuncia</button>
     </form>
+
     <div id="listaDenuncias"></div>
+
     <script type="module" src="js/main.js"></script>
 </body>
 </html>

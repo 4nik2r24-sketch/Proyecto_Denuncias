@@ -1,46 +1,68 @@
-// Importamos la función de guardado que creamos en storage.js
 import { guardarDenuncia } from './storage.js';
 
 const formulario = document.getElementById('denunciaForm');
 const lista = document.getElementById('listaDenuncias');
 
-// Evento: Subida de formulario
 formulario.addEventListener('submit', (e) => {
-    e.preventDefault(); // Regla: Prevención de envío
+    e.preventDefault(); 
 
-    // Obtener valores
-    const nuevaDenuncia = {
-        titulo: document.getElementById('titulo').value,
-        nombre: document.getElementById('nombre').value,
-        email: document.getElementById('email').value,
-        descripcion: document.getElementById('descripcion').value
+    
+    const campos = {
+
+        tipo = document.getElementById('tipoDenuncia').value;
+        nombre: document.getElementById('nombre'),
+        email: document.getElementById('email'),
+        descripcion: document.getElementById('descripcion')
     };
 
-    // Validaciones básicas (min 5 reglas)[cite: 1, 2]
-    if (nuevaDenuncia.titulo.length < 5) {
-        alert("El título es muy corto.");
+   
+    Object.values(campos).forEach(c => c.classList.remove('error'));
+
+    
+    let esValido = true;
+
+    if (campos.tipo.value.length < 5) {
+        campos.tipo.classList.add('error'); 
+        esValido = false;
+    }
+    if (campos.nombre.value.length < 3) {
+        campos.nombre.classList.add('error');
+        esValido = false;
+    }
+    if (!campos.email.value.includes('@')) {
+        campos.email.classList.add('error');
+        esValido = false;
+    }
+    if (campos.descripcion.value.length < 10) {
+        campos.descripcion.classList.add('error');
+        esValido = false;
+    }
+
+    if (!esValido) {
+        alert("Por favor, corrige los campos resaltados.");
         return;
     }
 
-    // Guardar
-    guardarDenuncia(nuevaDenuncia);
-    
-    // Limpiar formulario y actualizar vista
+   
+    guardarDenuncia({
+        tipo: campos.tipo.value,
+        nombre: campos.nombre.value,
+        email: campos.email.value,
+        descripcion: campos.descripcion.value
+    });
+
     formulario.reset();
     renderizarDenuncias();
 });
 
-// Función para mostrar denuncias (Manipulación del DOM)[cite: 1, 2]
 function renderizarDenuncias() {
-    lista.innerHTML = ''; 
+    lista.innerHTML = '';
     const datos = JSON.parse(localStorage.getItem('denuncias') || '[]');
-    
     datos.forEach(d => {
-        const div = document.createElement('div'); // Generación dinámica[cite: 1, 2]
+        const div = document.createElement('div'); 
         div.innerHTML = `<h3>${d.titulo}</h3><p>Denunciante: ${d.nombre}</p>`;
         lista.appendChild(div);
     });
 }
 
-// Cargar denuncias al iniciar la página
 renderizarDenuncias();
