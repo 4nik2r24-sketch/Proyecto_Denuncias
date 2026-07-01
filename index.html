@@ -8,13 +8,11 @@
 <body>
     <main>
         <div id="mensajeExito" class="oculto">Denuncia registrada con éxito ✅</div>
-
         <div id="loginSection">
             <h1>Acceso al Sistema</h1>
             <input type="text" id="username" placeholder="Nombre de usuario" required>
             <button id="btnLogin">Ingresar</button>
         </div>
-
         <div id="appSection" style="display: none;">
             <header>
                 <h1>Gestión de Denuncias</h1>
@@ -27,16 +25,12 @@
                     <option value="Violencia Psicológica">Violencia Psicológica</option>
                 </select>
                 <span id="error-tipoDenuncia" class="mensaje-error"></span>
-
                 <input type="text" id="nombre" placeholder="Nombre completo" required>
                 <span id="error-nombre" class="mensaje-error"></span>
-
                 <input type="email" id="email" placeholder="Correo electrónico" required>
                 <span id="error-email" class="mensaje-error"></span>
-
                 <textarea id="descripcion" placeholder="Descripción (min 10 caracteres)" required></textarea>
                 <span id="error-descripcion" class="mensaje-error"></span>
-
                 <button type="submit">Registrar Denuncia</button>
             </form>
             <section id="listaDenuncias"></section>

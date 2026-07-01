@@ -18,40 +18,30 @@ const gestionarError = (campoId, mensaje) => {
     }
 };
 
+['tipoDenuncia', 'nombre', 'email', 'descripcion'].forEach(id => {
+    document.getElementById(id).addEventListener('blur', (e) => {
+        const val = e.target.value;
+        if (id === 'tipoDenuncia' && val === "") gestionarError(id, "Debe seleccionar un tipo.");
+        else if (id === 'nombre' && val.length < 3) gestionarError(id, "Mínimo 3 caracteres.");
+        else if (id === 'email' && (!val.includes('@') || val.length < 5)) gestionarError(id, "Correo inválido.");
+        else if (id === 'descripcion' && val.length < 10) gestionarError(id, "Mínimo 10 caracteres.");
+        else gestionarError(id, null);
+    });
+});
+
 formulario.addEventListener('submit', (e) => {
     e.preventDefault();
-    const campos = {
-        tipo: document.getElementById('tipoDenuncia'),
-        nombre: document.getElementById('nombre'),
-        email: document.getElementById('email'),
-        descripcion: document.getElementById('descripcion')
-    };
-
-    let esValido = true;
-    if (campos.tipo.value === "") { gestionarError('tipoDenuncia', "Seleccione una opción."); esValido = false; }
-    else { gestionarError('tipoDenuncia', null); }
-
-    if (campos.nombre.value.length < 3) { gestionarError('nombre', "Mínimo 3 letras."); esValido = false; }
-    else { gestionarError('nombre', null); }
-
-    if (!campos.email.value.includes('@')) { gestionarError('email', "Correo inválido."); esValido = false; }
-    else { gestionarError('email', null); }
-
-    if (campos.descripcion.value.length < 10) { gestionarError('descripcion', "Mínimo 10 caracteres."); esValido = false; }
-    else { gestionarError('descripcion', null); }
-
-    if (esValido) {
+    const campos = { tipo: document.getElementById('tipoDenuncia'), nombre: document.getElementById('nombre'), email: document.getElementById('email'), descripcion: document.getElementById('descripcion') };
+    
+    if (campos.tipo.value && campos.nombre.value.length >= 3 && campos.email.value.includes('@') && campos.descripcion.value.length >= 10) {
         guardarDenuncia({ tipo: campos.tipo.value, nombre: campos.nombre.value, email: campos.email.value, descripcion: campos.descripcion.value });
         formulario.reset();
         Object.values(campos).forEach(c => c.classList.remove('valido'));
-    
         msgExito.classList.remove('oculto');
         setTimeout(() => msgExito.classList.add('oculto'), 3000);
-        
         renderizarDenuncias();
-    }
+    } else { alert("Por favor, complete todos los campos correctamente."); }
 });
-
 
 function renderizarDenuncias() {
     const datos = JSON.parse(localStorage.getItem('denuncias') || '[]');
@@ -73,8 +63,7 @@ function renderizarDenuncias() {
 }
 
 document.getElementById('btnLogin').onclick = () => {
-    const user = document.getElementById('username').value;
-    if (user.length >= 3) { localStorage.setItem('currentUser', user); location.reload(); }
+    if (document.getElementById('username').value.length >= 3) { localStorage.setItem('currentUser', document.getElementById('username').value); location.reload(); }
     else alert("Usuario muy corto.");
 };
 document.getElementById('btnLogout').onclick = () => { localStorage.removeItem('currentUser'); location.reload(); };
